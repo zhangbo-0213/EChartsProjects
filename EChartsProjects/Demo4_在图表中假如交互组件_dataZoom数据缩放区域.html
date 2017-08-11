@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <title>ECharts</title>
+</head>
+<body>
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div id="main" style="height:400px"></div>
+    <!-- ECharts单文件引入 -->
+    <script src="echarts.js"></script>
+		<script type="text/javascript">
+		
+		function fetchData(cb) {
+		// 通过 setTimeout 模拟异步加载
+			setTimeout(function () {
+				cb({
+					data: [["14.616","7.241","0.896"],
+						["3.958","5.701","0.955"],
+						["2.768","8.971","0.669"],
+						["9.051","9.710","0.171"],
+						["14.046","4.182","0.536"],
+						["12.295","1.429","0.962"],
+						["4.417","8.167","0.113"],
+						["0.492","4.771","0.785"],
+						["7.632","2.605","0.645"],
+						["14.242","5.042","0.368"]]
+				});
+			}, 1000);
+		}
+		
+		 // 基于准备好的dom，初始化echarts图表
+        var myChart = echarts.init(document.getElementById('main')); 
+		
+		// 初始 option
+		var option = {
+			title: {
+				text: 'dataZoom数据缩放交互组件示例'
+			},
+			tooltip: {},
+			legend: {
+				data:['value']
+			},
+			xAxis: {
+				type:'value'
+			},
+			yAxis: {
+				type:'value'
+			},
+			dataZoom:[
+				{
+					//这个dataZoom组件
+					type:'slider', //这个dataZoom组件是slider型的dataZoom组件
+					xAxisIndex:0,  //控制x轴
+					start:10,      //左边放在10%的位置
+					end:60         //右边放在60%的位置
+				},
+				{
+					//这个dataZoom组件
+					type:'inside', //这个dataZoom组件是inside型的dataZoom组件，可以通过鼠标滚轮进行放大缩小
+					xAxisIndex:0,  //控制x轴
+					start:10,      //左边放在10%的位置
+					end:60         //右边放在60%的位置
+				},
+				{
+					//这个dataZoom组件
+					type:'slider', //这个dataZoom组件是inside型的dataZoom组件
+					yAxisIndex:0,  //控制y轴
+					start:10,      //左边放在10%的位置
+					end:60         //右边放在60%的位置
+				},
+				{	//这个dataZoom组件
+					type:'inside', //这个dataZoom组件是inside型的dataZoom组件，可以通过鼠标滚轮进行放大缩小
+					yAxisIndex:0,  //控制y轴
+					start:10,      //左边放在10%的位置
+					end:60         //右边放在60%的位置
+				}
+			],
+			series: [
+				{
+					type: 'scatter', //这个是散点图
+					itemStyle:{
+						normal:{
+							opacity:1.2
+						}
+					},
+					symbolSize:function(val){
+						return val[2]*40;
+					},
+					data:[]
+				}]
+		};
+		
+		 // 为echarts对象加载数据 
+        myChart.setOption(option);
+		
+		fetchData(function (data) {
+			myChart.setOption({
+				series: [{
+					data: data.data
+				}]
+			});
+		});
+		
+    </script>
+</body>
